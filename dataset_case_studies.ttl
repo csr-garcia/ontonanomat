@@ -1,0 +1,101 @@
+
+@prefix gsn: <https://w3id.org/gsn-remediation#> .
+@prefix ex: <https://w3id.org/gsn-remediation/case-study/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Case Study 1: Adsorption of methylene blue
+#################################################################
+
+ex:MB_Adsorbent a gsn:Nanomaterial ;
+    rdfs:label "Macroporous polyacrylamide/γ-Fe2O3 nanocomposite beads"@en ;
+    gsn:hasRemediationMechanism ex:Adsorption_MB ;
+    gsn:hasSustainabilityProfile ex:Sust_MB .
+
+ex:MB_Dye a gsn:Contaminant ;
+    rdfs:label "Methylene blue"@en ;
+    rdfs:comment "Organic dye used as a model contaminant in adsorption tests."@en .
+
+ex:Adsorption_MB a gsn:Adsorption ;
+    gsn:targetsContaminant ex:MB_Dye ;
+    gsn:hasExperimentalCondition ex:Ads_MB_pH ,
+                               ex:Ads_MB_Temp ,
+                               ex:Ads_MB_ContactTime ,
+                               ex:Ads_MB_Dosage ;
+    gsn:hasPerformanceIndicator ex:PI_Adsorption_MB .
+
+ex:Ads_MB_pH a gsn:ExperimentalCondition ;
+    rdfs:label "pH 7 condition"@en ;
+    gsn:hasPropertyValue "7.0"^^xsd:double .
+
+ex:Ads_MB_Temp a gsn:ExperimentalCondition ;
+    rdfs:label "Room temperature (298 K)"@en ;
+    gsn:hasPropertyValue "298.0"^^xsd:double .
+
+ex:Ads_MB_ContactTime a gsn:ExperimentalCondition ;
+    rdfs:label "Contact time 120 min"@en ;
+    gsn:hasPropertyValue "120.0"^^xsd:double .
+
+ex:Ads_MB_Dosage a gsn:ExperimentalCondition ;
+    rdfs:label "Adsorbent dosage 0.5 g/L"@en ;
+    gsn:hasPropertyValue "0.5"^^xsd:double .
+
+ex:PI_Adsorption_MB a gsn:PerformanceIndicator ;
+    rdfs:label "Performance indicator: MB adsorption"@en ;
+    gsn:hasDegradationPercentage "95.0"^^xsd:double ;
+    gsn:hasCycleNumber "5"^^xsd:integer .
+
+ex:Sust_MB a gsn:SustainabilityProfile ;
+    gsn:usesRenewableSolvent true ;
+    gsn:hasSolventGreenness "Low-toxicity / water-based"@en .
+
+#################################################################
+# Case Study 2: Photocatalytic degradation of rhodamine B
+#################################################################
+
+ex:Photo_Catalyst a gsn:Nanomaterial ;
+    rdfs:label "Green-synthesized visible-light photocatalyst"@en ;
+    gsn:hasRemediationMechanism ex:Photocatalysis_RhB ;
+    gsn:hasSustainabilityProfile ex:Sust_RhB .
+
+ex:RhB_Dye a gsn:Contaminant ;
+    rdfs:label "Rhodamine B"@en ;
+    rdfs:comment "Xanthene dye used as a model contaminant in photocatalysis."@en .
+
+ex:Photocatalysis_RhB a gsn:Photocatalysis ;
+    gsn:targetsContaminant ex:RhB_Dye ;
+    gsn:hasExperimentalCondition ex:Photo_pH ,
+                               ex:Photo_Temp ,
+                               ex:Photo_Dosage ,
+                               ex:Photo_Irradiation ;
+    gsn:hasPerformanceIndicator ex:PI_Photocatalysis_RhB .
+
+ex:Photo_pH a gsn:ExperimentalCondition ;
+    rdfs:label "pH 6.5 condition"@en ;
+    gsn:hasPropertyValue "6.5"^^xsd:double .
+
+ex:Photo_Temp a gsn:ExperimentalCondition ;
+    rdfs:label "Room temperature (298 K, photocatalysis)"@en ;
+    gsn:hasPropertyValue "298.0"^^xsd:double .
+
+ex:Photo_Dosage a gsn:ExperimentalCondition ;
+    rdfs:label "Photocatalyst dosage 0.3 g/L"@en ;
+    gsn:hasPropertyValue "0.3"^^xsd:double .
+
+ex:Photo_Irradiation a gsn:ExperimentalCondition ;
+    rdfs:label "Visible-light irradiation 50 W/m² at 450 nm"@en ;
+    gsn:hasPropertyValue "50.0"^^xsd:double .
+
+ex:PI_Photocatalysis_RhB a gsn:PerformanceIndicator ;
+    rdfs:label "Performance indicator: RhB photocatalysis"@en ;
+    gsn:hasDegradationPercentage "93.0"^^xsd:double ;
+    gsn:hasRateConstant "0.045"^^xsd:double ;
+    gsn:hasRateConstantUnit "min^-1 (apparent)" .
+
+ex:Sust_RhB a gsn:SustainabilityProfile ;
+    gsn:usesRenewableSolvent true ;
+    gsn:isRenewablePrecursor true ;
+    gsn:hasSolventGreenness "Low-toxicity / water-based"@en .
+
