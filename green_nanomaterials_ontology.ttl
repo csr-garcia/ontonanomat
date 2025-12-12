@@ -1,0 +1,254 @@
+
+@prefix : <https://w3id.org/gsn-remediation#> .
+@prefix gsn: <https://w3id.org/gsn-remediation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix enm: <http://enanomapper.github.io/ontologies/enanomapper.owl#> .
+@prefix chebi: <http://purl.obolibrary.org/obo/CHEBI_> .
+@prefix envo: <http://purl.obolibrary.org/obo/ENVO_> .
+@prefix cheminf: <http://semanticscience.org/resource/CHEMINF_> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<https://w3id.org/gsn-remediation>
+    a owl:Ontology ;
+    rdfs:label "Ontology for Ontology-Based Semantic Integration of Green-Synthesized Nanomaterials for Environmentally Sustainable Remediation Processes"@en ;
+    rdfs:comment "Core OWL 2 DL ontology skeleton matching the manuscript modules: Nanomaterial, Contaminant, RemediationMechanism, SustainabilityProfile, and Provenance. Provisional IRI; update to your final persistent URI when available."@en ;
+    owl:versionInfo "0.1-preprint" ;
+    owl:imports
+        <http://enanomapper.github.io/ontologies/enanomapper.owl> ,
+        <http://purl.obolibrary.org/obo/chebi.owl> ,
+        <http://purl.obolibrary.org/obo/envo.owl> ,
+        <http://semanticscience.org/ontology/cheminf.owl> ,
+        <http://www.w3.org/ns/prov-o-20130430> .
+
+#################################################################
+# Core Classes
+#################################################################
+
+gsn:Nanomaterial a owl:Class ;
+    rdfs:label "Nanomaterial"@en ;
+    rdfs:comment "Green-synthesized nanomaterial used for environmental remediation."@en .
+
+gsn:HybridNanomaterial a owl:Class ;
+    rdfs:subClassOf gsn:Nanomaterial ;
+    rdfs:label "Hybrid nanomaterial"@en ;
+    rdfs:comment "Hybrid or composite nanomaterial, e.g. polymer–nanoparticle systems."@en .
+
+gsn:MagneticNanocomposite a owl:Class ;
+    rdfs:subClassOf gsn:HybridNanomaterial ;
+    rdfs:label "Magnetic nanocomposite"@en .
+
+gsn:GreenSynthesizedMaterial a owl:Class ;
+    rdfs:subClassOf gsn:Nanomaterial ;
+    rdfs:label "Green-synthesized material"@en ;
+    rdfs:comment "Nanomaterials obtained using green synthesis routes (e.g. plant extracts, low-toxicity solvents)."@en .
+
+gsn:Contaminant a owl:Class ;
+    rdfs:label "Contaminant"@en ;
+    rdfs:comment "Chemical or biological pollutant subject to remediation."@en .
+
+gsn:HeavyMetal a owl:Class ;
+    rdfs:subClassOf gsn:Contaminant ;
+    rdfs:label "Heavy metal contaminant"@en .
+
+gsn:OrganicPollutant a owl:Class ;
+    rdfs:subClassOf gsn:Contaminant ;
+    rdfs:label "Organic pollutant"@en .
+
+gsn:RemediationMechanism a owl:Class ;
+    rdfs:label "Remediation mechanism"@en ;
+    rdfs:comment "Mechanistic pathway responsible for contaminant removal."@en .
+
+gsn:Adsorption a owl:Class ;
+    rdfs:subClassOf gsn:RemediationMechanism ;
+    rdfs:label "Adsorption"@en .
+
+gsn:Photocatalysis a owl:Class ;
+    rdfs:subClassOf gsn:RemediationMechanism ;
+    rdfs:label "Photocatalysis"@en .
+
+gsn:KineticModel a owl:Class ;
+    rdfs:label "Kinetic model"@en .
+
+gsn:IsothermModel a owl:Class ;
+    rdfs:label "Isotherm model"@en .
+
+gsn:PerformanceIndicator a owl:Class ;
+    rdfs:label "Performance indicator"@en ;
+    rdfs:comment "Quantitative descriptor of remediation performance, e.g. qmax, k_app, degradation percentage."@en .
+
+gsn:SustainabilityProfile a owl:Class ;
+    rdfs:label "Sustainability profile"@en ;
+    rdfs:comment "Lifecycle- and sustainability-related descriptors of synthesis routes and remediation processes."@en .
+
+gsn:SynthesisRoute a owl:Class ;
+    rdfs:label "Synthesis route"@en ;
+    rdfs:comment "Process describing how a nanomaterial is synthesized, including precursors, solvents, energy demand, etc."@en .
+
+gsn:ExperimentalCondition a owl:Class ;
+    rdfs:label "Experimental condition"@en ;
+    rdfs:comment "Operational parameters for remediation experiments (pH, contact time, light source, etc.)."@en .
+
+gsn:ProvenanceEntity a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Provenance entity"@en ;
+    rdfs:comment "Entity used to store provenance-related information, aligned with PROV-O."@en .
+
+gsn:PhysicochemicalProperty a owl:Class ;
+    rdfs:label "Physicochemical property"@en ;
+    rdfs:subClassOf cheminf:CHEMINF_000000 ;
+    rdfs:comment "Physicochemical descriptor relevant to nanomaterial performance, e.g. surface area, band gap, zeta potential."@en .
+
+#################################################################
+# Object Properties
+#################################################################
+
+gsn:hasProperty a owl:ObjectProperty ;
+    rdfs:domain gsn:Nanomaterial ;
+    rdfs:range gsn:PhysicochemicalProperty ;
+    rdfs:label "has property"@en .
+
+gsn:hasSynthesisRoute a owl:ObjectProperty ;
+    rdfs:domain gsn:Nanomaterial ;
+    rdfs:range gsn:SynthesisRoute ;
+    rdfs:label "has synthesis route"@en .
+
+gsn:hasSustainabilityProfile a owl:ObjectProperty ;
+    rdfs:domain gsn:Nanomaterial ;
+    rdfs:range gsn:SustainabilityProfile ;
+    rdfs:label "has sustainability profile"@en .
+
+gsn:targetsContaminant a owl:ObjectProperty ;
+    rdfs:domain gsn:RemediationMechanism ;
+    rdfs:range gsn:Contaminant ;
+    rdfs:label "targets contaminant"@en .
+
+gsn:isRemediatedBy a owl:ObjectProperty ;
+    owl:inverseOf gsn:targetsContaminant ;
+    rdfs:domain gsn:Contaminant ;
+    rdfs:range gsn:RemediationMechanism ;
+    rdfs:label "is remediated by"@en .
+
+gsn:hasRemediationMechanism a owl:ObjectProperty ;
+    rdfs:domain gsn:Nanomaterial ;
+    rdfs:range gsn:RemediationMechanism ;
+    rdfs:label "has remediation mechanism"@en .
+
+gsn:hasKineticModel a owl:ObjectProperty ;
+    rdfs:domain gsn:RemediationMechanism ;
+    rdfs:range gsn:KineticModel ;
+    rdfs:label "has kinetic model"@en .
+
+gsn:hasIsothermModel a owl:ObjectProperty ;
+    rdfs:domain gsn:RemediationMechanism ;
+    rdfs:range gsn:IsothermModel ;
+    rdfs:label "has isotherm model"@en .
+
+gsn:hasPerformanceIndicator a owl:ObjectProperty ;
+    rdfs:domain gsn:RemediationMechanism ;
+    rdfs:range gsn:PerformanceIndicator ;
+    rdfs:label "has performance indicator"@en .
+
+gsn:hasExperimentalCondition a owl:ObjectProperty ;
+    rdfs:domain gsn:RemediationMechanism ;
+    rdfs:range gsn:ExperimentalCondition ;
+    rdfs:label "has experimental condition"@en .
+
+gsn:hasProvenance a owl:ObjectProperty ;
+    rdfs:domain gsn:Nanomaterial ;
+    rdfs:range gsn:ProvenanceEntity ;
+    rdfs:label "has provenance"@en .
+
+gsn:wasDerivedFromPublication a owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:domain gsn:ProvenanceEntity ;
+    rdfs:range prov:Entity ;
+    rdfs:label "was derived from publication"@en .
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+gsn:hasQmax a owl:DatatypeProperty ;
+    rdfs:domain gsn:PerformanceIndicator ;
+    rdfs:range xsd:double ;
+    rdfs:label "has maximum adsorption capacity (qmax)"@en .
+
+gsn:hasRateConstant a owl:DatatypeProperty ;
+    rdfs:domain gsn:PerformanceIndicator ;
+    rdfs:range xsd:double ;
+    rdfs:label "has rate constant"@en .
+
+gsn:hasDegradationPercentage a owl:DatatypeProperty ;
+    rdfs:domain gsn:PerformanceIndicator ;
+    rdfs:range xsd:double ;
+    rdfs:label "has degradation percentage"@en .
+
+gsn:hasBandGap a owl:DatatypeProperty ;
+    rdfs:domain gsn:PhysicochemicalProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "has band-gap energy (eV)"@en .
+
+gsn:hasSurfaceArea a owl:DatatypeProperty ;
+    rdfs:domain gsn:PhysicochemicalProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "has surface area (m2/g)"@en .
+
+gsn:hasZetaPotential a owl:DatatypeProperty ;
+    rdfs:domain gsn:PhysicochemicalProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "has zeta potential (mV)"@en .
+
+gsn:hasSolventGreenness a owl:DatatypeProperty ;
+    rdfs:domain gsn:SustainabilityProfile ;
+    rdfs:range xsd:string ;
+    rdfs:label "has solvent greenness category"@en .
+
+gsn:hasEnergyDemand a owl:DatatypeProperty ;
+    rdfs:domain gsn:SustainabilityProfile ;
+    rdfs:range xsd:double ;
+    rdfs:label "has energy demand"@en ;
+    rdfs:comment "Approximate energy demand of the synthesis route (e.g. kWh per batch or relative index)."@en .
+
+gsn:usesRenewableSolvent a owl:DatatypeProperty ;
+    rdfs:domain gsn:SustainabilityProfile ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "uses renewable solvent"@en .
+
+gsn:isRenewablePrecursor a owl:DatatypeProperty ;
+    rdfs:domain gsn:SustainabilityProfile ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "uses renewable precursor"@en .
+
+#################################################################
+# Example Class Axioms (Patterns)
+#################################################################
+
+# Every Nanomaterial must have at least one synthesis route and one physicochemical property
+gsn:Nanomaterial rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty gsn:hasSynthesisRoute ;
+    owl:someValuesFrom gsn:SynthesisRoute
+] , [
+    a owl:Restriction ;
+    owl:onProperty gsn:hasProperty ;
+    owl:someValuesFrom gsn:PhysicochemicalProperty
+] .
+
+# Every Nanomaterial that participates in remediation has at least one remediation mechanism
+gsn:Nanomaterial rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty gsn:hasRemediationMechanism ;
+    owl:someValuesFrom gsn:RemediationMechanism
+] .
+
+# Every RemediationMechanism has at least one PerformanceIndicator
+gsn:RemediationMechanism rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty gsn:hasPerformanceIndicator ;
+    owl:someValuesFrom gsn:PerformanceIndicator
+] .
+

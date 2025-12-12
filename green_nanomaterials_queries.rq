@@ -1,0 +1,119 @@
+
+# SPARQL Query Library for the Green-Synthesized Nanomaterials Ontology
+# Base IRI: https://w3id.org/gsn-remediation#
+# Prefixes used in all queries:
+
+PREFIX gsn: <https://w3id.org/gsn-remediation#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+################################################################################
+# Q1. High-performance adsorbents with renewable solvents
+################################################################################
+
+# Retrieve nanomaterials synthesized with renewable solvents and qmax > 100 mg/g
+SELECT ?material ?qmax ?solventGreenness
+WHERE {
+  ?material a gsn:Nanomaterial ;
+            gsn:hasRemediationMechanism ?mech ;
+            gsn:hasSustainabilityProfile ?sust .
+  ?mech a gsn:Adsorption ;
+        gsn:hasPerformanceIndicator ?perf .
+  ?perf gsn:hasQmax ?qmax .
+  ?sust gsn:usesRenewableSolvent true ;
+        gsn:hasSolventGreenness ?solventGreenness .
+  FILTER (?qmax > 100.0)
+}
+
+################################################################################
+# Q2. Photocatalysts with band-gap < 3.0 eV and validated ROS pathways
+################################################################################
+
+SELECT ?catalyst ?bandgap
+WHERE {
+  ?catalyst a gsn:Nanomaterial ;
+            gsn:hasRemediationMechanism ?mech ;
+            gsn:hasProperty ?prop .
+  ?mech a gsn:Photocatalysis ;
+        gsn:hasPerformanceIndicator ?perf .
+  ?prop gsn:hasBandGap ?bandgap .
+  FILTER (?bandgap < 3.0)
+}
+
+################################################################################
+# Q3. Sustainability benchmarking: energy demand vs. rate constant
+################################################################################
+
+SELECT ?material ?energyDemand ?rateConstant
+WHERE {
+  ?material a gsn:Nanomaterial ;
+            gsn:hasSustainabilityProfile ?sust ;
+            gsn:hasRemediationMechanism ?mech .
+  ?sust gsn:hasEnergyDemand ?energyDemand .
+  ?mech gsn:hasPerformanceIndicator ?perf .
+  ?perf gsn:hasRateConstant ?rateConstant .
+}
+ORDER BY ASC(?energyDemand)
+
+################################################################################
+# Q4. Materials studied for a given contaminant (by label)
+################################################################################
+
+# Replace "methylene blue" with the contaminant label of interest
+SELECT DISTINCT ?material ?mech
+WHERE {
+  ?cont a gsn:Contaminant ;
+        rdfs:label ?label .
+  FILTER (lcase(str(?label)) = "methylene blue")
+  ?mech gsn:targetsContaminant ?cont .
+  ?material gsn:hasRemediationMechanism ?mech .
+}
+
+################################################################################
+# Q5. Materials lacking sustainability metadata (for data-quality auditing)
+################################################################################
+
+SELECT ?material
+WHERE {
+  ?material a gsn:Nanomaterial .
+  FILTER NOT EXISTS { ?material gsn:hasSustainabilityProfile ?sust . }
+}
+
+################################################################################
+# Q6. Materials with incomplete performance indicators (missing qmax)
+################################################################################
+
+SELECT ?mech
+WHERE {
+  ?mech a gsn:Adsorption ;
+        gsn:hasPerformanceIndicator ?perf .
+  FILTER NOT EXISTS { ?perf gsn:hasQmax ?qmax . }
+}
+
+################################################################################
+# Q7. Traceability: retrieve provenance for a given nanomaterial
+################################################################################
+
+SELECT ?material ?provEntity ?source
+WHERE {
+  ?material a gsn:Nanomaterial ;
+            gsn:hasProvenance ?provEntity .
+  OPTIONAL { ?provEntity gsn:wasDerivedFromPublication ?source . }
+}
+
+################################################################################
+# Q8. List all nanomaterials, their mechanisms, and main indicators
+################################################################################
+
+SELECT ?material ?mechType ?qmax ?deg
+WHERE {
+  ?material a gsn:Nanomaterial ;
+            gsn:hasRemediationMechanism ?mech .
+  ?mech a ?mechType ;
+        gsn:hasPerformanceIndicator ?perf .
+  OPTIONAL { ?perf gsn:hasQmax ?qmax . }
+  OPTIONAL { ?perf gsn:hasDegradationPercentage ?deg . }
+}
+
