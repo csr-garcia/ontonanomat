@@ -5,7 +5,7 @@ Overview
 This repository contains the ontology GSN-Remediation, developed to support ontology-based semantic integration of green-synthesized nanomaterials, their physicochemical profiles, remediation mechanisms, sustainability attributes, and provenance.
 It accompanies the manuscript:
 
-Ontology-Based Semantic Integration of Green-Synthesized Nanomaterials for Environmentally Sustainable Remediation Processes.
+Ontology-Based Semantic Integration of Green-Synthesized Nanomaterials for Sustainable Environmental Remediation
 
 The goal is to enable FAIR, machine-actionable, and interoperable knowledge representation for adsorption and photocatalytic remediation workflows.
 
