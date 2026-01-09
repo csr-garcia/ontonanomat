@@ -1,5 +1,7 @@
 # ontonanomat
 
+[![DOI](https://zenodo.org/badge/1115429569.svg)](https://doi.org/10.5281/zenodo.18201275)
+
 Overview
 
 This repository contains the ontology GSN-Remediation, developed to support ontology-based semantic integration of green-synthesized nanomaterials, their physicochemical profiles, remediation mechanisms, sustainability attributes, and provenance.
